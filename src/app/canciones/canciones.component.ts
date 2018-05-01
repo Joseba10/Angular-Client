@@ -28,8 +28,22 @@ this.mockData();
  
 
   ngOnInit() {
-    console.log( 'ngOnInit constructor')
-    //Llamadas en el servicio
+    console.log('CancionesComponent ngOnInit');
+    //llamadas a los servicios
+    this.cancionesService.getAll().subscribe(
+      result=>{
+        console.log('response correcto %o', result);
+        //let cancion: Cancion;
+        result.forEach( element => {
+            
+            this.canciones.push( element );
+        });
+        
+      },
+      error=>{
+        console.warn(error);
+      }
+);
   }
   
   eliminar( id: number ){
@@ -38,11 +52,11 @@ this.mockData();
 
   mockData(){
 
-    this.canciones.push(new Cancion(1,"Macarena"));
+   /* this.canciones.push(new Cancion(1,"Macarena"));
      this.canciones.push(new Cancion(2,"Beethoven"));
      this.canciones.push(new Cancion(3,"Un Paseo"));
      this.canciones.push(new Cancion(4,"Salidos de Emergencia"));
-     this.canciones.push(new Cancion(4,"Jump"));
+     this.canciones.push(new Cancion(4,"Jump"));*/
   }
 
 }
