@@ -9,6 +9,7 @@ console.log('Cancion Constructor');
 this._id=id;
 this._nombre=nombre;
 
+
 }
 get id(){
     //console.log('Getter');

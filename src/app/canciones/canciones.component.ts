@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CancionesService } from '../providers/canciones.service';
 import { Cancion } from '../model/cancion';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-canciones',
@@ -12,6 +13,7 @@ export class CancionesComponent implements OnInit {
   //Canciones
     canciones:Cancion [];
     cancionSeleccionada: Cancion;
+    nombreCancion: String;
 
 
   constructor(private cancionesService: CancionesService) {
@@ -21,7 +23,7 @@ export class CancionesComponent implements OnInit {
      //Inicializar Variables
      this.canciones=[];
      this.cancionSeleccionada = new Cancion (-1,"");
-this.mockData();
+     this.mockData();
      
 
     }
@@ -29,25 +31,46 @@ this.mockData();
 
   ngOnInit() {
     console.log('CancionesComponent ngOnInit');
-    //llamadas a los servicios
-    this.cancionesService.getAll().subscribe(
-      result=>{
-        console.log('response correcto %o', result);
-        //let cancion: Cancion;
-        result.forEach( element => {
-            
-            this.canciones.push( element );
-        });
-        
-      },
-      error=>{
-        console.warn(error);
-      }
-);
+    this.recargar();
   }
+
+/*Recarga la Pagina*/
+recargar(){
+  console.log('CancionesComponent recargar');
+  this.canciones = [];
+  this.cancionesService.getAll().subscribe(
+    result=>{
+      console.log('    response correcto %o', result);   
+      if ( result != null ){     
+        result.forEach( element => {
+            this.canciones.push( element );
+        });    
+      }      
+    },
+    error=>{
+      console.warn(error);
+    }
+  );
+}
+
+crearCancion(){
+  console.log(`CancionesComponent crearCancion ${this.nombreCancion}`);
+}
+
   
-  eliminar( id: number ){
-    console.log(`CancionesComponent eliminar ${id}`);
+eliminar( id: number ){
+  console.log(`CancionesComponent eliminar ${id}`);
+  if ( confirm("¿ Quieres eliminar la canción ?") ){
+    
+    this.cancionesService.delete(id).subscribe(
+      result=>{
+          this.recargar();
+          console.log(`Cancion Eliminada!!!`);
+      },error=>{
+        console.warn(`Error al eliminar ${error}` );
+      }
+    );
+  }
 }
 
   mockData(){

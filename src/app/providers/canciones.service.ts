@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpHandler} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
+const endpoint='http://localhost:8080/cancion/';
+
 @Injectable()
 export class CancionesService {
 
@@ -12,9 +14,18 @@ export class CancionesService {
 
 
   getAll(): Observable<any>{
-    let url = `http://localhost:8080/cancion/`;
+    let url = endpoint;
     console.log(`CancionesService getAll ${url}`);    
     return this.http.get(url);
   } 
+
+  delete(id:number):Observable<any>{
+    let url = endpoint+id;
+    console.log(`CancionesService Delete ${url}`);
+    return this.http.delete(url);
+    
+
+
+  }
 
 }
